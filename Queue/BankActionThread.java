@@ -81,6 +81,20 @@ public class BankActionThread extends ActionThread
     public void executeApplication()
     {
         //ADD CODE HERE TO RUN THE EVENT SIMULATION
+        SimulationEvent next = theEvents.peek();
+        while (!theEvents.isEmpty()) {
+            next.process();
+            theEvents.remove();
+            lastEventReport = next.getDescription();
+            myReport.updateTime(next.getTime());
+
+
+            next = theEvents.peek();
+            if (!theEvents.isEmpty()) {
+                nextEventAction = next.getDescription();
+            }
+        animationPause();
+        }
     }
     
 
