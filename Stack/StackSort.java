@@ -78,10 +78,43 @@ public class StackSort {
      */
     private static int[] doStackSort(int data[]) {
 
-    int result[] = new int[data.length];
+        int result[] = new int[data.length];
 
+            
+        // ADD CODE HERE TO SORT THE ARRAY USING TWO STACKS
+        VectorStack<Integer> lowerValues = new VectorStack<Integer>();
+        VectorStack<Integer> upperValues = new VectorStack<Integer>();
+
+        for (int i = 0; i < data.length; i++) {
+            Integer value = data[i];
+           if (!lowerValues.isEmpty() && value < lowerValues.peek()) { // new value is less than the top of the lowerValues stack, meaning move lowerValues stack values to upperValues
+                while (!lowerValues.isEmpty() && value < lowerValues.peek()) {
+                upperValues.push(lowerValues.pop());
+                } // end while
+            } // end if
+         
+            else if (!upperValues.isEmpty() && value > upperValues.peek()) { // new value is greater than top of upperValues stack, meaning move upperValues to lowerValues
+                while (!upperValues.isEmpty() && value > upperValues.peek()) {
         
-    // ADD CODE HERE TO SORT THE ARRAY USING TWO STACKS
+                lowerValues.push(upperValues.pop());
+                } // end while
+            } // end else if
+        
+        // now push value into appropriate spot between the stacks after room is made
+        upperValues.push(value);
+        }
+
+        // push the values from the lower stack to the upper stack to merge into one for moving to result array
+        while (!lowerValues.isEmpty()) {
+            upperValues.push(lowerValues.pop());
+        }
+
+
+            int i = 0;
+            while (!upperValues.isEmpty()) {
+                result[i] = upperValues.pop();
+                i++;
+            }
 
         return result;
 
